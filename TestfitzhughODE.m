@@ -1,7 +1,6 @@
 % Modified from TestConvergenceODE.m from the Oslomet ACIT4310 course
 % Compares the fitznag.m versus Euler, Heuns and RK4
 
-close all
 % Values of h: 1, 1/2, 1/2^2, ..., 1/2^10.
 h=2.^[0:-1:-6];
 Nh=length(h);
@@ -15,7 +14,7 @@ IC=[0 0];
 for k=1:Nh
     t=[0:h(k):tmax];
     % Exact solution:
-    [time YExact]=ode45(@fitznag,t,IC);
+    [time, YExact]=ode45(@fitznag,t,IC);
 
     Y = (Euler(t, IC, @fitznag))';
     EE(k)=mean(abs(Y(:,1)- YExact(:,1)));

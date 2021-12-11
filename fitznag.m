@@ -5,8 +5,8 @@ function func = fitznag(~, IC)
     % Parameters from https://en.wikipedia.org/w/index.php?title=FitzHugh%E2%80%93Nagumo_model&oldid=1037464531
     R = 1;
     I_app = 0.5;
-    a = 0.8;
-    b = 0.7;
+    a = 0.7;
+    b = 0.8;
     tau = 12.5;
     
     v = IC(1);

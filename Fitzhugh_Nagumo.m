@@ -18,8 +18,8 @@ w_0 = 0;
 IC = [v_0, w_0];
 
 % Numerics
-t = 0:0.1:100;
-n=length(t);
+t = 0:0.01:200;
+n = length(t);
 v = -2.5:0.01:2.5;
 
 
@@ -114,9 +114,14 @@ hold off
 
 %I_app range
 I = 0:0.001:2;
-index = length(I);
 
-%initializing vectors
+index = 1;
+
+J_eig = length(I);
+eigenvalues_1 = length(I);
+eigenvalues_2 = length(I);
+J_trace = length(I);
+J_det = length(I);
 
 for i = I
     
@@ -128,7 +133,7 @@ for i = I
 
     
     % Jacobian values
-    f_v = 1-(v_real_I(1)^2);
+    f_v = 1-(v_real_I^2);
     f_w = -1;
     g_v = 1/tau;    
     g_w = -b/tau;
@@ -145,18 +150,17 @@ for i = I
     % determinant
     J_det(index) = det(J);
     
-    
     eigenvalues_1(index) = real(J_eig(1));
     eigenvalues_2(index) = real(J_eig(2));
 
-    index = index - 1;
+    index = index + 1;
 end
 
 %Finding limit for I_app and stability
-TraceMinimaIndex = islocalmin(abs(J_trace));
-I_value_indexed = TraceMinimaIndex.*I;
-I_value_indexed( I_value_indexed == 0 ) = [];
-I_min=zeros(length(I_value_indexed),1);
+TraceMinimaIndex = islocalmin(abs(J_trace)); % Vector with local minima
+I_value_indexed = TraceMinimaIndex.*I; % Extract corresponding I value
+I_value_indexed( I_value_indexed == 0 ) = []; % Remove zero-elements
+I_min = zeros(length(I_value_indexed), 1);
 
 % plot
 f3= figure;
@@ -173,6 +177,7 @@ p_3(3)=plot(I, J_trace);
 p_3(4)=plot(I, J_det);
 p_3(5)=plot(I_value_indexed, I_min, 'rx');
 legend(p_3, "Eig_1", "Eig_2", "Trace", "Determinant", "Change of SS")
+
 
 % ------ Numerical solutions -------- %
 
@@ -193,4 +198,11 @@ p_4(2)=plot(t, Heun_result(1,:) , 'LineWidth', 1);
 p_4(3)=plot(t, RungeKutta4_result(1,:), 'LineWidth', 1);
 % axis([0 10 0 inf])
 legend(p_4, 'Euler', 'Heun', 'RK4');
-hold off    
+hold off 
+
+f5=figure;
+figure(f5)
+hold on
+title("Comparison of schemes")
+TestfitzhughODE
+hold off
